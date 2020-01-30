@@ -50,7 +50,7 @@ function Liujie_curl($url, $post = "")
     curl_close($ch);
     return $c;
 }
-$vvvdj = Liujie_curl('https://m.vvvdj.com/share/music.asp?id=' . $_GET["id"]);
+$vvvdj = Liujie_curl('https://m.vvvdj.com/play/'.$_GET["id"].'.html');
 preg_match_all('/function DeCode()(.*?)\'\\);/is', $vvvdj, $LiuJie_r);
 $djurlq = urlsafe_b64encode($LiuJie_r[0][0]);
 $vvvdjurl = Liujie_curl('http://djapi.idophoto.com.cn/jiexi/vvvdj/index.php', array("code" => $djurlq));
