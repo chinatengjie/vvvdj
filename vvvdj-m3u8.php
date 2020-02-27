@@ -40,8 +40,7 @@ function Liujie_curl($url, $post = "")
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);//超时时间30秒，自己设置
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-    //curl_setopt($ch, CURLOPT_USERAGENT, "Dalvik/1.6.0 (Linux; U; Android 4.1.2; DROID RAZR HD Build/9.8.1Q-62_VQW_MR-2)");
-    curl_setopt($ch,CURLOPT_USERAGENT,"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
+    curl_setopt($ch, CURLOPT_USERAGENT, "Dalvik/1.6.0 (Linux; U; Android 4.1.2; DROID RAZR HD Build/9.8.1Q-62_VQW_MR-2)");
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('X-FORWARDED-FOR:' . $ip, 'CLIENT-IP:' . $ip));//构造IP
     if ($post) {
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -51,11 +50,8 @@ function Liujie_curl($url, $post = "")
     curl_close($ch);
     return $c;
 }
- $vvvdj = Liujie_curl('http://www.vvvdj.com/play/'.$_GET["id"].'.html');
- preg_match_all('/function DeCode()(.*?)\n    }/is', $vvvdj, $LiuJie_r);
- preg_match_all('/var XCODE(.*?)\'\)/is', $vvvdj, $LiuJie_s);
-
-$djurlq = urlsafe_b64encode($LiuJie_r[0][0].$LiuJie_s[0][0]);
-$vvvdjurl = 'http://t.h.vvvdj.com/face/'.Liujie_curl('http://djapi.idophoto.com.cn/jiexi/vvvdj/index.php', array("code" => $djurlq)).'.mp4';
+$vvvdj = Liujie_curl('https://m.vvvdj.com/play/'.$_GET["id"].'.html');
+preg_match_all('/function DeCode()(.*?)\'\\);/is', $vvvdj, $LiuJie_r);
+$djurlq = urlsafe_b64encode($LiuJie_r[0][0]);
+$vvvdjurl = Liujie_curl('http://djapi.idophoto.com.cn/jiexi/vvvdj/index.php', array("code" => $djurlq));
 Header("Location: {$vvvdjurl}");
-
