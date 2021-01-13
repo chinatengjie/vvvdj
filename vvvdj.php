@@ -1,8 +1,8 @@
 <?php
 //上传到根目录,服务器组设置为 /vvvvdj.php?id= 歌曲地址写VVVDJ 播放ID 服务器API地址如失效联系 QQ173753438.
-    if (!$_GET["id"]) {
+if (!$_GET["id"]) {
 exit('参数空,如：vvvdj.php?id=185371');
-    }
+}
 function urlsafe_b64encode($string)
 {
     $data = base64_encode($string);
@@ -51,11 +51,9 @@ function Liujie_curl($url, $post = "")
     curl_close($ch);
     return $c;
 }
- $vvvdj = Liujie_curl('http://www.vvvdj.com/play/'.$_GET["id"].'.html');
- preg_match_all('/function DeCode()(.*?)\n    }/is', $vvvdj, $LiuJie_r);
- preg_match_all('/var XCODE(.*?)\'\)/is', $vvvdj, $LiuJie_s);
-
-$djurlq = urlsafe_b64encode($LiuJie_r[0][0].$LiuJie_s[0][0]);
-$vvvdjurl = 'http://t.h.vvvdj.com/face/'.Liujie_curl('http://djapi.idophoto.com.cn/jiexi/vvvdj/index.php', array("code" => $djurlq)).'.mp4';
+$vvvdj = Liujie_curl('http://www.vvvdj.com/play/'.$_GET["id"].'.html');
+preg_match_all('/function DeCode()(.*?)\'\);/is', $vvvdj, $LiuJie_r);
+$djurlq = urlsafe_b64encode($LiuJie_r[0][0]);
+$vvvdjurl =str_replace("http://tspc.vvvdj.com/","http://vvv.m4a.idophoto.com.cn/",Liujie_curl('http://djapi.idophoto.com.cn/jiexi/vvvdj/index.php', array("code" => $djurlq)));
 Header("Location: {$vvvdjurl}");
-
+?>
